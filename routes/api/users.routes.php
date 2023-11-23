@@ -1,27 +1,16 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function (Request $request) {
-    return 'get all users';
-});
+Route::get('/', [UserController::class, 'index']);
 
-Route::get('/{id}', function (Request $request) {
-    return 'get a user';
-});
+Route::get('/{id}', [UserController::class, 'show']);
 
-Route::post('/', function (Request $request) {
-    return 'create a user';
-});
+Route::post('/', [UserController::class, 'store']);
 
+Route::patch('/{id}', [UserController::class, 'update']);
 
-Route::patch('/{id}', function (Request $request) {
-    return 'update a user';
-});
-
-
-Route::delete('/{id}', function (Request $request) {
-    return 'delete a user';
-});
+Route::delete('/{id}', [UserController::class, 'destroy']);

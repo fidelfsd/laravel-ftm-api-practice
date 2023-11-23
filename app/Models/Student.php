@@ -11,6 +11,13 @@ class Student extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['created_at', 'updated_at'];
+
+    // https://laravel.com/docs/10.x/eloquent-mutators#date-casting
+    protected $casts = [
+        'date_of_birth' => 'datetime:Y-m-d',
+    ];
+
     // 1:1 inversa con User
     public function user(): BelongsTo
     {

@@ -1,27 +1,16 @@
 <?php
 
+use App\Http\Controllers\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function (Request $request) {
-    return 'get all teachers';
-});
+Route::get('/', [TeacherController::class, 'index']);
 
-Route::get('/{id}', function (Request $request) {
-    return 'get a teacher';
-});
+Route::get('/{id}', [TeacherController::class, 'show']);
 
-Route::post('/', function (Request $request) {
-    return 'create a teacher';
-});
+Route::post('/', [TeacherController::class, 'store']);
 
+Route::patch('/{id}', [TeacherController::class, 'update']);
 
-Route::patch('/{id}', function (Request $request) {
-    return 'update a teacher';
-});
-
-
-Route::delete('/{id}', function (Request $request) {
-    return 'delete a teacher';
-});
+Route::delete('/{id}', [TeacherController::class, 'destroy']);

@@ -1,27 +1,16 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function (Request $request) {
-    return 'get all courses';
-});
+Route::get('/', [CourseController::class, 'index']);
 
-Route::get('/{id}', function (Request $request) {
-    return 'get a course';
-});
+Route::get('/{id}', [CourseController::class, 'show']);
 
-Route::post('/', function (Request $request) {
-    return 'create a course';
-});
+Route::post('/', [CourseController::class, 'store']);
 
+Route::patch('/{id}', [CourseController::class, 'update']);
 
-Route::patch('/{id}', function (Request $request) {
-    return 'update a course';
-});
-
-
-Route::delete('/{id}', function (Request $request) {
-    return 'delete a course';
-});
+Route::delete('/{id}', [CourseController::class, 'destroy']);
