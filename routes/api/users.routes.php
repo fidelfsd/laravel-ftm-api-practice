@@ -11,6 +11,8 @@ Route::get('/{id}', [UserController::class, 'show']);
 
 Route::post('/', [UserController::class, 'store']);
 
-Route::patch('/{id}', [UserController::class, 'update']);
+Route::patch('/{user}', [UserController::class, 'update']);
 
-Route::delete('/{id}', [UserController::class, 'destroy']);
+Route::delete('/{user}', [UserController::class, 'destroy']);
+
+

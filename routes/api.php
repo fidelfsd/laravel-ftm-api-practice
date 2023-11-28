@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 // authentication routes
 Route::post('/login', function (Request $request) {
@@ -45,3 +47,14 @@ foreach ($files as $file) {
     // Register the routes
     Route::prefix($prefix)->group($file);
 }
+
+
+// Enrutado de users usando la metodologia de Laravel
+// Route::get('users/{user}/prueba', [UserController::class, 'prueba'])
+//     ->missing(function (Request $request) {
+//         return response()->json(['message' => 'User resource not found from prueba'], Response::HTTP_FOUND);
+//     });
+// Route::apiResource('users', UserController::class)
+//     ->missing(function (Request $request) {
+//         return response()->json(['message' => 'User resource not found'], Response::HTTP_FOUND);
+//     });
