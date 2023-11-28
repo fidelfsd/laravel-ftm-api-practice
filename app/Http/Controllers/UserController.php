@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -16,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-
+            Log::info('Users listed');
             // usando QueryBuilder
             $users = DB::table('users')
                 ->leftJoin('students', 'users.id', '=', 'students.user_id')
@@ -66,8 +68,26 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
+            Log::info('User storage');
             // validate the request
-            // TODO: validate
+            $rules = [
+                'username' => 'required|alpha:ascii',
+                'last_name' => 'required|alpha:ascii',
+                'email' => 'required|email|unique:users|regex:/.+\@.+\..+/',
+                'password' => 'required|string|min:8',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                $data = [
+                    'message' => 'Errors in fields validation',
+                    'error' => $validator->errors()
+                ];
+                Log::error('Errors in fields validation');
+                return  response()->json($data, Response::HTTP_BAD_REQUEST);
+            }
+
 
             // create a new user
             $user = new User;
@@ -150,7 +170,23 @@ class UserController extends Controller
     {
         try {
             // validate the request
-            // TODO: validate
+            $rules = [
+                'username' => 'sometimes|required|alpha:ascii',
+                'last_name' => 'sometimes|required|alpha:ascii',
+                'email' => 'sometimes|required|email|unique:users|regex:/.+\@.+\..+/',
+                'password' => 'sometimes|required|string|min:8',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                $data = [
+                    'message' => 'Errors in fields validation',
+                    'error' => $validator->errors()
+                ];
+                return  response()->json($data, Response::HTTP_BAD_REQUEST);
+            }
+
 
             // put default values if not set in request body
 
