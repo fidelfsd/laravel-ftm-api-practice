@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\User;
 use DateTimeImmutable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -84,5 +85,67 @@ class AuthController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
+    }
+
+    public function login(Request $request)
+    {
+        try {
+
+            // validate
+            $rules = [
+                'email' => 'required|email|regex:/.+\@.+\..+/',
+                'password' => 'required|string|min:8',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                $data = [
+                    'message' => 'Errors in fields validation',
+                    'error' => $validator->errors()
+                ];
+                return response()->json($data, Response::HTTP_BAD_REQUEST);
+            }
+
+            // validate if user already exists
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return response()->json([
+                    'message' => 'User is not registered in the database'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            // validate user password
+            $isPasswordMatch = Hash::check($request->password, $user->password_hash);
+            if (!$isPasswordMatch) {
+                return response()->json([
+                    'message' => 'Password is not valid'
+                ], Response::HTTP_FORBIDDEN);
+            }
+
+            // response
+            return response()->json([
+                'message' => 'User login successful',
+                'token' => $user->createToken('API_TOKEN')->plainTextToken
+            ], Response::HTTP_OK);
+        } catch (\Throwable $error) {
+            return response()->json(
+                [
+                    'message' => 'Error in login',
+                    'error' => $error->getMessage()
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    public function logout(Request $request)
+    {
+
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'Logged out',
+
+        ]);
     }
 }
