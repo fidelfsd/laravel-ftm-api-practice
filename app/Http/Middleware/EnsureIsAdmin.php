@@ -17,15 +17,24 @@ class EnsureIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Get the authenticated user
         $user = Auth::user();
-        $role = $user->roles[0]->id;
 
-        if ($role != UserRole::ADMIN->value) {
+        // Extract roles from the user and convert to an array
+        $rolesArray = iterator_to_array($user->roles);
+
+        // Extract the "id" values from the roles array
+        $rolesId = array_column($rolesArray, "id");
+
+        // Check if the user has the "ADMIN" role
+        if (!in_array(UserRole::ADMIN->value, $rolesId)) {
+            // If not, return an unauthorized response with details
             return response()->json([
                 'message' => 'You are not allowed to access this resource'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
+        // If the user has the "ADMIN" role, continue with the request
         return $next($request);
     }
 }
