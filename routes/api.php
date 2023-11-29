@@ -1,18 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-// authentication routes
-Route::post('/login', function (Request $request) {
-    return 'login';
-});
 
-Route::post('/register', function (Request $request) {
-    return 'register';
-});
 
 // -----------------------------------------------------------------------------
 // variante 1 para registrar las rutas (manual)

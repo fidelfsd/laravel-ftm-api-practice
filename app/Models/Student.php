@@ -11,6 +11,15 @@ class Student extends Model
 {
     use HasFactory;
 
+    // protected $fillable = [
+    //     'user_id',
+    //     'date_of_birth',
+    //     'address',
+    //     'phone_number',
+    //     'gender',
+    //     'nationality'
+    // ];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     // https://laravel.com/docs/10.x/eloquent-mutators#date-casting

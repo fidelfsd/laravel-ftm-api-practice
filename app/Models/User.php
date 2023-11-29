@@ -11,6 +11,14 @@ class User extends Model
 {
     use HasFactory;
 
+    // protected $fillable = [
+    //     'username',
+    //     'first_name',
+    //     'last_name',
+    //     'email',
+    //     'password_hash'
+    // ];
+
     protected $table = 'users'; // especificar la tabla en caso que no cumpla la convension de Laravel
 
     // https://laravel.com/docs/10.x/eloquent-serialization#hiding-attributes-from-json
